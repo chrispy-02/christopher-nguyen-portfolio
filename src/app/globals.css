@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (toggle adds `.dark` to <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #fbfbfb;
+  --surface: #ffffff;
+  --surface-2: #f4f4f5;
+  --foreground: #18181b;
+  --muted: #5b616e;
+  --border: #e7e7ea;
+  --accent: #2f54c9;
+  --accent-foreground: #ffffff;
+  --accent-weak: #eef1fb;
+  --accent-text: #2548bd;
+  --ring: #2f54c9;
+}
+
+.dark {
+  --background: #0b0d11;
+  --surface: #14161b;
+  --surface-2: #191c22;
+  --foreground: #e9eaed;
+  --muted: #9aa0ab;
+  --border: #262a31;
+  --accent: #3d5ce0;
+  --accent-foreground: #ffffff;
+  --accent-weak: rgba(78, 107, 236, 0.16);
+  --accent-text: #93a6ff;
+  --ring: #4e6bec;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-weak: var(--accent-weak);
+  --color-accent-text: var(--accent-text);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-card: 1rem;
+}
+
+@layer base {
+  /* Tailwind v4 defaults borders to currentColor; restore a token-based default */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+}
+
+/* Subtle dot-grid texture for the hero — atmosphere without noise */
+.bg-dot-grid {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--foreground) 7%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+/* Restrained, one-time entrance reveal */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
