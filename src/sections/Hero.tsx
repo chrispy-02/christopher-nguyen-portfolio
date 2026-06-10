@@ -51,7 +51,8 @@ export function Hero() {
             style={{ animationDelay: "240ms" }}
           >
             <span className="inline-flex h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-            Open to Application Security, Backend, and Software Engineering roles.
+            Open to Application Security Engineer, Security Software Engineer, Backend 
+            Engineer, DevSecOps Engineer, Vulnerability Management Analyst, or Security Tools Engineer roles.
           </p>
         </div>
       </Container>
