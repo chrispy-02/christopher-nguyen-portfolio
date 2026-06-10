@@ -116,17 +116,23 @@ export const projects: Project[] = [
       "Coordinating across a 6-person team: clear ownership boundaries kept the backend coherent.",
     ],
     links: [
-      // REPLACE_ME: add the public repository URL here once the repo is made public (set `href`).
       {
         kind: "repo",
         label: "Repository",
-        note: "Private during the capstone — may be made public.",
+        href: "https://github.com/chrispy-02/security-scanner-platform",
+        note: "This public portfolio version was cleaned, secured, documented, and prepared for deployment by myself.",
       },
-      // REPLACE_ME: add a demo video URL here when available (set `href`).
       {
         kind: "video",
         label: "Demo video",
-        note: "Coming soon.",
+        href: "https://www.youtube.com/watch?v=YUtp3JlNoGM",
+        note: "Demo video of the platform in action.",
+      },
+      {
+        kind: "demo",
+        label: "Live Application",
+        href: "https://security-scanner-platform.onrender.com/home",
+        note: "Live application of the platform.",
       },
       // REPLACE_ME: add screenshots to /public and surface them on this page when available.
     ],
