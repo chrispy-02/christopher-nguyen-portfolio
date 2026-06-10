@@ -310,6 +310,12 @@ export const projects: Project[] = [
         href: "https://github.com/chrispy-02/SpartysBoots",
         note: "C++/wxWidgets source on GitHub.",
       },
+      {
+        kind: "video",
+        label: "Demo video",
+        href: "https://www.youtube.com/watch?v=d-wygT7Cytc",
+        note: "Walkthrough of the game in action.",
+      },
     ],
     gallery: [
       {
