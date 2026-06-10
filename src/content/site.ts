@@ -7,7 +7,7 @@ export const siteConfig = {
   name: "Christopher Nguyen",
   // REPLACE_ME: set to your real production URL after the first Vercel deploy.
   // Used for absolute OG/canonical URLs. A placeholder here is safe for the build.
-  url: "https://christopher-nguyen.vercel.app",
+  url: "https://chrispy-dev.vercel.app/",
   title: "Christopher Nguyen — Backend & Application Security Engineer",
   description:
     "Backend engineer with security experience building secure web applications, automation workflows, and data-driven tools. Focused on application security, backend engineering, and reliable software.",
