@@ -206,8 +206,8 @@ function Gallery({ items }: { items: ProjectImage[] }) {
           <Image
             src={img.src}
             alt={img.alt}
-            width={2904}
-            height={1824}
+            width={img.width ?? 2904}
+            height={img.height ?? 1824}
             sizes="(min-width: 768px) 42rem, 100vw"
             className="h-auto w-full"
           />

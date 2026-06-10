@@ -19,6 +19,9 @@ export interface ProjectImage {
   src: string;
   alt: string;
   caption?: string;
+  /** Intrinsic pixel dimensions; falls back to the default gallery ratio when omitted. */
+  width?: number;
+  height?: number;
 }
 
 export type ProjectLinkKind = "repo" | "demo" | "video" | "private";
@@ -233,55 +236,97 @@ export const projects: Project[] = [
   },
   {
     slug: "spartyboots",
-    title: "SpartyBoots",
-    category: "Systems · C++ Engineering",
-    timeframe: "Dec 2024",
+    title: "SpartysBoots",
+    org: "Michigan State · CSE 335",
+    category: "C++ · Object-Oriented Design",
+    timeframe: "Oct – Nov 2024",
     team: "4-person team",
     tagline:
-      "A modular, event-driven logic-circuit simulator in C++ with a wxWidgets GUI — built with performance and test coverage in mind.",
-    tags: ["C++", "Testing", "Performance", "Systems", "wxWidgets", "CMake"],
-    techStack: ["C++", "wxWidgets", "CMake", "Doxygen", "Google Test"],
+      "A C++/wxWidgets logic-circuit puzzle game inspired by Rocky's Boots, built for MSU's CSE 335. I contributed the scoreboard rendering, XML-driven score and instruction loading, product-scoring logic, and Sparty's kick animation and input-pin behavior within a 4-person team.",
+    tags: [
+      "C++",
+      "Object-Oriented Design",
+      "wxWidgets",
+      "Testing",
+      "Event-Driven",
+      "Desktop GUI",
+    ],
+    techStack: [
+      "C++",
+      "wxWidgets",
+      "CMake",
+      "Google Test",
+      "Doxygen",
+      "XML Parsing",
+    ],
     overview: [
-      "A logic-circuit simulator game built with a 4-person team: a modular, event-driven engine in C++ with a wxWidgets GUI.",
-      "The focus was solid engineering practice — performance, test coverage, build automation, and documentation — on a sprint-based Agile schedule.",
+      "SpartysBoots is a C++ and wxWidgets logic-circuit puzzle game built by a 4-person team for Michigan State University's CSE 335 (Object-Oriented Software Design). Inspired by the 1982 classic Rocky's Boots, it challenges players to complete levels by wiring circuits from logic gates — AND, OR, NOT, NAND, SR FlipFlop, and D FlipFlop.",
+      "My code contributions focused on the Scoreboard, ScoringVisitor, and Sparty gameplay systems: XML-loaded scoreboard configuration, score and instruction rendering, product-scoring outcomes, and Sparty's kick animation, input-pin behavior, and wire-connection handling.",
+      "This was a course team project: the game design and image assets were provided by MSU course staff, and the four-person student team wrote the C++ gameplay code in CLion.",
     ],
     problem: [
-      "Simulating logic circuits in real time demands an efficient, well-structured engine; a 4-person team also needs reliable builds, tests, and documentation to move quickly without regressions.",
+      "Each level scores the player on which products get kicked off the conveyor, so the game needs reliable scoring, a clear scoreboard, and a Sparty actor whose kick is driven by the live state of the circuit the player builds.",
+      "As a four-person team working in Agile sprints, we needed clean object-oriented boundaries and XML-driven configuration so levels, scores, and instructions could change as data rather than code.",
     ],
     contributions: [
-      "Improved frame rates by 25% through performance work on the simulation and render loop.",
-      "Contributed to the Google Test suite, helping raise code coverage to 92% and cut regression debugging time by 40%.",
-      "Supported CMake build automation and Doxygen documentation, helping cut build setup time by 30%.",
+      "Implemented the Scoreboard class, including XML loading of its position, good/bad scoring values, and multi-line instruction text.",
+      "Rendered the scoreboard with wxWidgets graphics — level score, game score, a bordered panel, and per-line level instructions.",
+      "Built the ScoringVisitor (visitor pattern) that evaluates each product — kicked, missed, correctly ignored, or already scored — and updates the score.",
+      "Implemented and co-implemented Sparty: XML-loaded position, size, input-pin location, kick duration and speed; layered back/boot/front rendering with a rotating-boot kick animation; and input-pin wiring with release-to-connect behavior.",
+      "Drove Sparty's kick timing off the input pin's logic state, triggering a product kick at the right point in the animation while the conveyor is moving.",
     ],
     architecture: [
-      "Modular, event-driven C++ architecture separating simulation logic from the wxWidgets GUI.",
-      "CMake build system for reproducible builds; Doxygen for generated documentation.",
-      "Google Test suite integrated into the workflow to guard against regressions.",
+      "Event-driven C++ design: items implement Update(elapsed) and Draw(graphics) against a wxGraphicsContext, keeping simulation state separate from wxWidgets rendering.",
+      "Scoring uses the visitor pattern — a ScoringVisitor walks products and applies per-outcome scoring without coupling that logic into the product classes.",
+      "Game content is data-driven: items such as the Scoreboard and Sparty load their position, sizing, scoring values, and instruction text from the level XML at runtime.",
+      "Sparty composes three image layers (background, boot, foreground) and animates the boot around a pivot, kicking a product at a set point in the cycle based on the connected pin's state.",
+      "CMake drives reproducible builds, Google Test covers the logic, and Doxygen generates documentation — on a sprint-based Agile workflow.",
     ],
     relevance: {
-      title: "Engineering rigor",
+      title: "Software engineering relevance",
       points: [
-        "Demonstrates systems thinking: a modular, event-driven design that stays maintainable as it grows.",
-        "Testing discipline — 92% coverage with a real Google Test suite — is the same rigor secure backends need.",
-        "Performance and reproducible builds reflect attention to the non-functional qualities that make software reliable.",
+        "Object-oriented design done deliberately — built on inheritance (an Item base class) and the visitor pattern (ScoringVisitor), which is exactly what CSE 335 sets out to teach.",
+        "An event-driven update/draw loop with a clean split between simulation state and the wxWidgets GUI keeps a multi-author C++ codebase maintainable.",
+        "XML-driven configuration is a practical example of data-driven design: scores, instructions, and actor placement change as data, not code.",
+        "Working in a 4-person Agile team with Google Test and reproducible CMake builds reflects the engineering rigor backend and software roles rely on.",
       ],
     },
     impact: [
-      { value: "+25%", label: "frame-rate improvement" },
-      { value: "92%", label: "code coverage reached" },
-      { value: "−40%", label: "regression debugging time" },
-      { value: "−30%", label: "build setup time" },
+      { value: "3", label: "gameplay systems I authored" },
+      { value: "6", label: "C++ files under my author tag" },
+      { value: "4", label: "person MSU team" },
     ],
+    impactNote:
+      "Figures describe the systems and files I authored — the Scoreboard, ScoringVisitor, and Sparty classes — and the team's size, not performance benchmarks.",
     learnings: [
-      "How much test coverage and clean build tooling pay off — they turn a 4-person C++ project from chaotic into predictable.",
-      "Performance work is most effective when it's measured: profile before optimizing.",
+      "The visitor pattern keeps cross-cutting logic — like scoring every product by outcome — out of the data classes and easy to extend.",
+      "Game feel lives in the update loop: tying Sparty's kick to elapsed time and the input pin's logic state made the timing predictable.",
+      "On a four-person C++ team, data-driven XML config and shared object-oriented boundaries let everyone work without stepping on each other's code.",
     ],
     links: [
-      // REPLACE_ME: add the SpartyBoots GitHub repository URL here (set `href`).
       {
         kind: "repo",
         label: "Repository",
-        note: "Link coming soon.",
+        href: "https://github.com/chrispy-02/SpartysBoots",
+        note: "C++/wxWidgets source on GitHub.",
+      },
+    ],
+    gallery: [
+      {
+        src: "/images/spartyboots/spartyboots-gameplay.png",
+        alt: "SpartysBoots gameplay showing the scoreboard and instructions, Sparty, and logic gates wired across the conveyor belt.",
+        caption:
+          "Gameplay — players wire logic gates to make Sparty kick the correct products off the conveyor; the scoreboard (top-right) tracks level and game score.",
+        width: 794,
+        height: 610,
+      },
+      {
+        src: "/images/spartyboots/spartyboots-sparty.png",
+        alt: "Sparty rendered from layered back, boot, and front images, with the input pin and wire used to connect logic to the kick.",
+        caption:
+          "Sparty — one of the systems I authored: layered back/boot/front rendering, a rotating-boot kick animation, and an input pin that triggers the kick when its logic state goes high.",
+        width: 1918,
+        height: 1021,
       },
     ],
   },
