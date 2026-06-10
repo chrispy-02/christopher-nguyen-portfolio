@@ -15,6 +15,12 @@ export interface Metric {
   label: string;
 }
 
+export interface ProjectImage {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 export type ProjectLinkKind = "repo" | "demo" | "video" | "private";
 
 export interface ProjectLink {
@@ -47,6 +53,8 @@ export interface Project {
   impactNote?: string;
   learnings: string[];
   links: ProjectLink[];
+  /** Optional screenshots rendered in the case study. */
+  gallery?: ProjectImage[];
 }
 
 export const projects: Project[] = [
@@ -55,16 +63,16 @@ export const projects: Project[] = [
     title: "Vulnerability Scan & Detect Platform",
     org: "McKesson Capstone",
     category: "Application Security · Web Platform",
-    timeframe: "May 2025",
+    timeframe: "Jan – May 2025",
     team: "6-person team",
     tagline:
-      "A web security platform that automates OWASP ZAP scans through CI/CD and replaces manual CSV review with centralized dashboards and reporting.",
+      "A Flask/MySQL security platform that automates OWASP ZAP scans through GitHub Actions, stores results in MySQL, and surfaces vulnerabilities through role-based dashboards, scan history, and reporting views.",
     tags: [
       "Application Security",
       "Backend",
       "Automation",
       "Data Modeling",
-      "CI/CD",
+      "RBAC",
       "Python",
       "Docker",
     ],
@@ -73,68 +81,92 @@ export const projects: Project[] = [
       "Flask",
       "MySQL",
       "OWASP ZAP",
+      "GitHub Actions",
       "Docker",
       "JavaScript",
-      "GitLab CI/CD",
+      "Chart.js",
+      "Google OAuth (Authlib)",
+      "Gunicorn",
     ],
     overview: [
       "A capstone project sponsored by and built for McKesson, developed with a 6-person engineering team. The platform automates web vulnerability scanning and centralizes results that teams previously tracked by hand.",
-      "It triggers OWASP ZAP scans through GitLab CI/CD pipelines, ingests the findings, and presents them in dashboards for tracking, history, and reporting — turning a manual, CSV-driven process into a repeatable workflow.",
+      "It triggers OWASP ZAP scans through a GitHub Actions pipeline, ingests the findings, and presents them in role-based dashboards for risk summaries, scan history, and reporting — turning a manual, CSV-driven process into a repeatable workflow.",
+      "After the capstone, I rebuilt the project into a public, deployable portfolio version: removing secrets, hardening the demo, and writing the architecture, deployment, and security documentation.",
     ],
     problem: [
       "Security review relied on running scans manually and reconciling results in spreadsheets — slow, error-prone, and hard to track over time.",
       "There was no central place to manage which sites were scanned, see historical risk trends, or schedule recurring scans across many targets.",
     ],
     contributions: [
-      "Owned the MySQL data model end to end — designed 12 tables covering user access, website management, scan history, vulnerability tracking, and recurring scan scheduling.",
-      "Contributed heavily to the Flask backend and JavaScript frontend, building scan ingestion, website tracking, and historical risk reporting.",
-      "Helped wire OWASP ZAP scans into GitLab CI/CD so scans run automatically as part of the pipeline.",
+      "On the capstone team, owned the MySQL data model end to end — a 12-table schema covering users and roles, managed websites, scan history, vulnerability records, recurring schedules, API keys, and website sharing.",
+      "Contributed heavily to the Flask backend and JavaScript frontend — scan ingestion, website tracking, and historical risk reporting — and integrated OWASP ZAP into the team's CI pipeline so scans ran automatically.",
+      "As the public-portfolio maintainer, migrated the scan automation from the original GitLab CI dependency to GitHub Actions and moved every checked-in secret into environment variables.",
+      "Hardened the public demo with role-based access control, secure cookies, SSRF-aware scan-target validation, a scan allowlist for non-privileged users, per-user cooldowns, and a seeded demo login flow — and authored the architecture, deployment, and security docs.",
     ],
     architecture: [
-      "Flask backend exposing endpoints for scan ingestion, website management, and reporting, backed by a normalized MySQL schema.",
-      "OWASP ZAP runs inside the GitLab CI/CD pipeline; output is parsed and ingested into the database instead of exported to CSV.",
-      "A 12-table relational schema models users & access, managed websites, individual scans, detected vulnerabilities, and recurring scan schedules — enabling per-site historical risk reporting.",
-      "Dockerized services keep local and pipeline environments consistent.",
+      "Flask backend (served by Gunicorn) exposing routes for authentication, scan dispatch, website management, dashboards, reporting, and a REST API with per-user API keys, backed by a normalized MySQL schema.",
+      "When a scan is requested, a target-validation guard runs first — rejecting non-HTTP and private/internal addresses (SSRF protection) and restricting non-privileged users to an allowlist — before the backend dispatches the OWASP ZAP baseline scan as a GitHub Actions workflow.",
+      "GitHub Actions runs the ZAP scan and uploads the report as an artifact; the app polls the run, downloads the artifact, parses it, and writes scan summaries and vulnerability records to MySQL instead of exporting CSVs.",
+      "A 12-table relational schema models users and roles, managed websites, individual scans, detected vulnerabilities, recurring schedules, API keys, and website sharing — enabling per-site historical risk reporting.",
+      "A background scheduler thread runs recurring scans (hourly / daily / weekly / monthly); Dockerized services keep local and deployed environments consistent.",
     ],
     relevance: {
       title: "Security & backend relevance",
       points: [
         "Automates dynamic application security testing (DAST) with OWASP ZAP so scanning is continuous, not ad hoc.",
         "Vulnerability tracking and scan history make risk trends visible over time, across many sites.",
-        "Access control modeled directly in the schema supports multi-user use with appropriate boundaries.",
-        "Demonstrates secure workflow design — moving review out of error-prone spreadsheets into an auditable system.",
+        "Role-based access control (owner / admin / employee / reader) and SSRF-aware scan-target validation model security boundaries directly into the system.",
+        "Demonstrates secure workflow design — moving review out of error-prone spreadsheets into an auditable, automated system.",
       ],
     },
     impact: [
-      { value: "100+", label: "scans supported across dozens of websites" },
       { value: "12", label: "MySQL tables designed and owned" },
-      { value: "5+", label: "users supported with multi-user access" },
+      { value: "4", label: "RBAC roles enforced (owner → reader)" },
+      { value: "6", label: "engineers on the capstone team" },
     ],
+    impactNote:
+      "Capstone-built, then hardened for a public demo — figures describe the system I designed and own, not production traffic.",
     learnings: [
       "Translating a security workflow into a data model — getting the schema right made every downstream feature simpler.",
       "Integrating security tooling into CI/CD so it runs reliably and produces structured, ingestible output.",
-      "Coordinating across a 6-person team: clear ownership boundaries kept the backend coherent.",
+      "Taking a class project to a public, deployable standard: removing secrets, hardening a demo, and documenting architecture and deployment for others to run.",
     ],
     links: [
       {
         kind: "repo",
         label: "Repository",
         href: "https://github.com/chrispy-02/security-scanner-platform",
-        note: "This public portfolio version was cleaned, secured, documented, and prepared for deployment by myself.",
+        note: "Public portfolio version — cleaned, secured, and documented for deployment.",
       },
       {
         kind: "video",
         label: "Demo video",
         href: "https://www.youtube.com/watch?v=YUtp3JlNoGM",
-        note: "Demo video of the platform in action.",
+        note: "Walkthrough of the platform in action.",
       },
       {
         kind: "demo",
-        label: "Live Application",
+        label: "Live demo",
         href: "https://security-scanner-platform.onrender.com/home",
-        note: "Live application of the platform.",
+        note: "Hosted demo (free tier — may take a moment to wake).",
       },
-      // REPLACE_ME: add screenshots to /public and surface them on this page when available.
+    ],
+    gallery: [
+      {
+        src: "/images/mckesson/executive-dashboard.png",
+        alt: "Executive security dashboard showing overall risk score, active vulnerabilities by severity, remediation rate, and trend graphs.",
+        caption: "Executive dashboard — risk scoring and trend analytics.",
+      },
+      {
+        src: "/images/mckesson/scan-dashboard.png",
+        alt: "Scan dashboard listing monitored websites with high, medium, low, and informational risk counts and per-site report links.",
+        caption: "Per-site scan results with severity breakdowns and report access.",
+      },
+      {
+        src: "/images/mckesson/roles.png",
+        alt: "Role management screen for assigning user roles such as owner, admin, and reader.",
+        caption: "Role-based access control — managing user roles.",
+      },
     ],
   },
   {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { Tag } from "@/components/ui/Tag";
 import { Stat } from "@/components/ui/Stat";
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/Icons";
 import { PipelineDiagram } from "@/assets/PipelineDiagram";
 import { siteConfig } from "@/content/site";
-import type { Project, ProjectLink } from "@/content/projects";
+import type { Project, ProjectImage, ProjectLink } from "@/content/projects";
 
 export function CaseStudy({ project }: { project: Project }) {
   return (
@@ -86,6 +87,12 @@ export function CaseStudy({ project }: { project: Project }) {
             </div>
           ) : null}
         </Block>
+
+        {project.gallery && project.gallery.length > 0 ? (
+          <Block title="Screenshots">
+            <Gallery items={project.gallery} />
+          </Block>
+        ) : null}
 
         <Block title={project.relevance.title}>
           <Bullets items={project.relevance.points} />
@@ -185,6 +192,33 @@ function Bullets({ items }: { items: string[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+function Gallery({ items }: { items: ProjectImage[] }) {
+  return (
+    <div className="flex flex-col gap-6">
+      {items.map((img) => (
+        <figure
+          key={img.src}
+          className="overflow-hidden rounded-2xl border bg-surface-2"
+        >
+          <Image
+            src={img.src}
+            alt={img.alt}
+            width={2904}
+            height={1824}
+            sizes="(min-width: 768px) 42rem, 100vw"
+            className="h-auto w-full"
+          />
+          {img.caption ? (
+            <figcaption className="border-t px-4 py-3 text-sm text-muted">
+              {img.caption}
+            </figcaption>
+          ) : null}
+        </figure>
+      ))}
+    </div>
   );
 }
 

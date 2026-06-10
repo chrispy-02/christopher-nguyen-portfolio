@@ -20,6 +20,7 @@ export const skillGroups: SkillGroup[] = [
       "Docker",
       "Git",
       "GitHub",
+      "GitHub Actions",
       "GitLab CI/CD",
       "Jira",
       "OWASP ZAP",
@@ -49,7 +50,7 @@ export const focusAreas: FocusArea[] = [
   {
     title: "Automation & CI/CD",
     description:
-      "Wiring scans and builds into GitLab CI/CD and Docker so the right things happen automatically and repeatably.",
+      "Wiring scans and builds into GitHub Actions, GitLab CI/CD, and Docker so the right things happen automatically and repeatably.",
   },
   {
     title: "Reliable Software",

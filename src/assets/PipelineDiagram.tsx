@@ -1,10 +1,10 @@
 import { ArrowRightIcon } from "@/components/ui/Icons";
 
 const steps = [
-  { label: "GitLab CI/CD", sub: "pipeline trigger" },
+  { label: "Flask app", sub: "validate target" },
+  { label: "GitHub Actions", sub: "scan dispatch" },
   { label: "OWASP ZAP", sub: "automated DAST" },
-  { label: "Ingest & parse", sub: "Flask backend" },
-  { label: "MySQL", sub: "12-table schema" },
+  { label: "Parse → MySQL", sub: "12-table schema" },
   { label: "Dashboards", sub: "history & reporting" },
 ];
 
